@@ -13,5 +13,5 @@ print(mp4_url)
 
 video=requests.get(mp4_url)
 
-with open('E:/PythonProject01/crawler/1.mp4','wb') as f:
+with open('E:/PythonProject01/download/1.mp4','wb') as f:
     f.write(video.content)

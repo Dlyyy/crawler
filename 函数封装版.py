@@ -35,7 +35,7 @@ def save(url):
         m.update(url.encode('utf-8'))
         m.update(str(time.time()).encode('utf-8'))
         filename=r'%s.mp4'% m.hexdigest()
-        filepath=r'E:/PythonProject01/crawler/%s'%filename
+        filepath=r'E:/PythonProject01/download/%s'%filename
         with open(filepath, 'wb') as f:
             f.write(video.content)
 

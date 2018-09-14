@@ -1,5 +1,11 @@
 # 并发版（如果一共需要爬30个视频，开30个线程去做，花的时间就是 其中最慢那份的耗时时间）
 # https://www.cnblogs.com/sss4/p/7809821.html
+
+        #1、先把爬主页的任务（get_index）异步提交到线程池
+        #2、get_index任务执行完后，会通过回调函add_done_callback（）数通知主线程，任务完成；
+        #2、把get_index执行结果（注意线程执行结果是对象，调用res=res.result()方法，才能获取真正执行结果），当做参数传给parse_index
+        #3、parse_index任务执行完毕后，
+        #4、通过循环，再次把获取详情页 get_detail（）任务提交到线程池执行
 import re
 import requests
 import hashlib
@@ -30,22 +36,22 @@ def get_detail(url):  #只下载1个视频
             if mp4_url_list:
                 mp4_url=mp4_url_list[0]
                 print(mp4_url)
-                # save(mp4_url)
+                save(mp4_url)
 
 
 def save(url):
     video = requests.get(url)
     if video.status_code==200:
         m=hashlib.md5()
-        m.updata(url.encode('utf-8'))
-        m.updata(str(time.time()).encode('utf-8'))
+        m.update(url.encode('utf-8'))
+        m.update(str(time.time()).encode('utf-8'))
         filename=r'%s.mp4'% m.hexdigest()
-        filepath=r'E:/PythonProject01/crawler/%s'%filename
+        filepath=r'E:/PythonProject01/download/%s'%filename
         with open(filepath, 'wb') as f:
             f.write(video.content)
 
 def main():
-    for i in range(2):
+    for i in range(1):
         p.submit(get_index,'http://www.xiaohuar.com/list-3-%s.html'% i ).add_done_callback(parse_index)
         #1、先把爬主页的任务（get_index）异步提交到线程池
         #2、get_index任务执行完后，会通过回调函add_done_callback（）数通知主线程，任务完成；
