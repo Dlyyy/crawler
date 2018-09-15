@@ -3,7 +3,7 @@ import requests
 
 respose=requests.get('http://www.xiaohuar.com/v/')
 print(respose.status_code)# 响应的状态码
-print(respose.content)  #返回字节信息
+print(respose.content)  #返回字节信息,无论响应是文本还是二进制内容，我们都可以用content属性获得bytes对象
 print(respose.text)  #返回文本内容
 urls=re.findall(r'class="items".*?href="(.*?)"',respose.text,re.S)  #re.S 把文本信息转换成1行匹配
 url=urls[8]
